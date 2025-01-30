@@ -1,0 +1,102 @@
+version: "3.9"
+
+networks:
+  porsche911_network:
+    driver: bridge
+
+services:
+  auth-service:
+    build:
+      context: ./AuthService
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db/main_db
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+    networks:
+      - porsche911_network
+
+  user-service:
+    build:
+      context: ./UserService
+    ports:
+      - "8002:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db/main_db
+    depends_on:
+      - db
+    logging:
+      driver: "json-file"
+    networks:
+      - porsche911_network
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: main_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - porsche911_network
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - porsche911_network
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+      - loki
+    volumes:
+      - ./provisioning:/etc/grafana/provisioning
+    networks:
+      - porsche911_network
+
+  loki:
+    image: grafana/loki:2.7.0
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+      - loki_wal:/wal
+    user: root
+    networks:
+      - porsche911_network
+
+  promtail:
+    image: grafana/promtail:2.7.0
+    volumes:
+      - /var/log:/var/log
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki
+    networks:
+      - porsche911_network
+                                                                    
+volumes:
+  postgres_data:
+  loki_data:
+  loki_wal:
+  grafana_data:
