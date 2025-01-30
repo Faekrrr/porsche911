@@ -59,21 +59,21 @@ This project consists of multiple microservices:
 
 ### 🔑 Auth Service:
 
-* **Register User:** `<span>POST /auth/register</span>`
-* **Login:** `<span>POST /auth/login</span>`
-* **Refresh Token:** `<span>POST /auth/refresh</span>`
+* **Register User:** `POST /auth/register`
+* **Login:** `POST /auth/login`
+* **Refresh Token:** `POST /auth/refresh`
 
 ### 👤 User Service:
 
-* **Get Current User:** `<span>GET /users/me</span>`
-* **Update User Profile:** `<span>PUT /users/me</span>`
-* **Delete User:** `<span>DELETE /users/me</span>`
-* **Get User Portfolio:** `<span>GET /users/{username}/portfolio</span>`
-* **Add Portfolio:** `<span>POST /users/me/portfolio</span>`
-* **Update Portfolio:** `<span>PUT /users/me/portfolio/{portfolio_id}</span>`
-* **Delete Portfolio:** `<span>DELETE /users/me/portfolio/{portfolio_id}</span>`
-* **Add Highlight:** `<span>POST /users/portfolio/{portfolio_id}/highlights</span>`
-* **Remove Highlight:** `<span>DELETE /users/portfolio/{portfolio_id}/highlights/{highlight_id}</span>`
+* **Get Current User:** `GET /users/me`
+* **Update User Profile:** `PUT /users/me`
+* **Delete User:** `DELETE /users/me`
+* **Get User Portfolio:** `GET /users/{username}/portfolio`
+* **Add Portfolio:** `POST /users/me/portfolio`
+* **Update Portfolio:** `PUT /users/me/portfolio/{portfolio_id}`
+* **Delete Portfolio:** `DELETE /users/me/portfolio/{portfolio_id}`
+* **Add Highlight:** `POST /users/portfolio/{portfolio_id}/highlights`
+* **Remove Highlight:** `DELETE /users/portfolio/{portfolio_id}/highlights/{highlight_id}`
 
 ## 6️⃣ Database Migrations
 
@@ -93,11 +93,11 @@ alembic upgrade head
 
 ## 7️⃣ Logging and Monitoring
 
-* **Grafana** runs on** **`<span>http://localhost:3000</span>`
-  * Default login:** **`<span>admin / admin</span>`
+* **Grafana** runs on** **`http://localhost:3000`
+  * Default login:** **`admin / admin`
   * Connected to Prometheus & Loki for monitoring logs
-* **Prometheus** UI:** **`<span>http://localhost:9090</span>`
-* **Loki (Log Aggregation):** `<span>http://localhost:3100</span>`
+* **Prometheus** UI:** **`http://localhost:9090`
+* **Loki (Log Aggregation):** `http://localhost:3100`
 
 ## 8️⃣ Testing
 
@@ -125,5 +125,3 @@ pytest tests/
   ```
 
 ---
-
-### 🚀 Happy Coding! 🚀
